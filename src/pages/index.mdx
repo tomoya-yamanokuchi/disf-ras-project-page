@@ -25,6 +25,7 @@ import Fig3 from "../assets/Fig3.png";
 import Fig_grasp_quality from "../assets/sim_error-crop-1.png";
 import Fig_grasp_success_panda from "../assets/sim_grasp_success_panda.png";
 import Fig_grasp_success_cross_robot from "../assets/sim_grasp_success_cross_robot.png";
+import Fig_grasp_success_real from "../assets/real_grasp_success.png";
 import contact_surface_opt from "../assets/contact_surface_optimization_v2-crop.png"
 import cache_video from "../assets/grasp_real/grasp_real_observed_Hammer_compressed_qt.mp4"
 import Splat from "../components/Splat.tsx"
@@ -179,19 +180,17 @@ export const components = {pre: CodeBlock, table: Table}
 
 ## Abstract
 
-{/* In this work, we address the limitation of surface fitting-based grasp planning algorithm, which primarily focuses on geometric alignment between the gripper and object surface while overlooking the stability of contact point distribution, often resulting in unstable grasps due to inadequate contact configurations. To overcome this limitation, we propose a novel surface fitting algorithm that integrates contact stability while preserving geometric compatibility. Inspired by human grasping behavior, our method disentangles the grasp pose optimization into three sequential steps: (1) rotation optimization to align contact normals, (2) translation refinement to improve Center of Mass (CoM) alignment, and (3) gripper aperture adjustment to optimize contact point distribution. We validate our approach through simulations on ten YCB dataset objects, demonstrating an 80\% improvement in grasp success over conventional surface fitting methods that disregard contact stability. Further details can be found on our project page: https://tomoya-yamanokuchi.github.io/disf-project-page/. */}
-
 </HighlightedSection>
 
 ## Overview
 
-{/* While surface fitting algorithms based on geometric compatibility optimization offer high flexibility, they do not sufficiently account for whether the aligned surfaces actually lead to a stable grasp.
+While surface fitting algorithms based on geometric compatibility optimization offer high flexibility, they do not sufficiently account for whether the aligned surfaces actually lead to a stable grasp.
 Specifically, achieving a stable grasp requires the ability to generate contact forces that can fully counteract external forces and torques (known as force-closure property).
 However, by focusing solely on geometric alignment, these methods fail to consider fundamental factors necessary for generating contact forces, such as the appropriate spatial relationship between the hand and the object.
 As a result, even if the surfaces are geometrically well-aligned, a spatial gap can form between the hand and the object, preventing actual contact from being established, or leading to an unstable distribution of contact points.
 
 To address this issue, it is essential not only to align surfaces based on geometric compatibility but also to ensure that the hand and object surfaces are spatially well-aligned, allowing contact to be potentially established.
-We refer to this spatial alignment, which facilitates contact, as contact stability (Fig.1). */}
+We refer to this spatial alignment, which facilitates contact, as contact stability (Fig.1).
 
 <Figure caption="Figure 1: The relationship between the grasp planning space, geometrically aligned space, and spatially aligned space.">
   <Image source={Fig1} altText="Figure 1: The relationship between the grasp planning space, geometrically aligned space, and spatially aligned space." class="max-h-[100rem]" />
@@ -409,7 +408,9 @@ highlighting the importance of CoM alignment in ensuring stable distribution of 
 
 {/* real-world examples */}
 
-## Real-world Grasp Execution by Proposed DISF
+##  Real-world Grasp Execution
+
+### Real-world Grasp Execution by Proposed DISF
 
 ### <span className="text-green-500"> (Real robot) Universal Robots UR3e + Robotiq HAND-E gripper </span>
 
@@ -429,6 +430,28 @@ highlighting the importance of CoM alignment in ensuring stable distribution of 
   <AutoVideo src={ur3e_Controller} caption="Controller" />
   <AutoVideo src={ur3e_Tape} caption="Tape" />
 </div>
+
+
+
+### Success Rate
+
+Figure 4 shows real-world grasp success results under the Known-shape and Observed-shape settings.
+The performance gap between DISF and VISF widens markedly under observed geometry.
+On the same objects as in the Known-shape evaluation, DISF achieves an identical success rate to the Known-shape setting, while VISF degrades.
+CMA-ES again fails across all Observed-shape trials.
+DISF further generalizes to additional everyday objects introduced only in the Observed-shape setting, demonstrating robustness to partial and noisy geometric observations.
+
+
+<Figure
+    caption="Figure 4: shows real-world grasp success results under the Known-shape and Observed-shape settings.
+The Observed-shape setting is reported in two blocks: (i) the same objects as the Known-shape setting (enabling a direct Known vs. Observed comparison), and (ii) additional objects used only in the Observed-shape setting.
+The checkmark (✅) indicates success, while the horizontal bar (-) indicates failure."
+  >
+    <Image source={Fig_grasp_success_real}
+      altText=".Figure 4: The results of planned grasp quality."
+      class="max-w-2xl w-full"
+    />
+</Figure>
 
 
 <br />
