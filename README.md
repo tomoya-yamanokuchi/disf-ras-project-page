@@ -1,8 +1,8 @@
 # DISF project page
 
-This is the project page repository of DISF.
+This is the project page repository of DISF extended from our conference version (https://tomoya-yamanokuchi.github.io/disf-project-page/).
 
-URL: https://tomoya-yamanokuchi.github.io/disf-project-page/
+URL: https://tomoya-yamanokuchi.github.io/disf-ras-project-page/
 
 
 ## Credits
