@@ -1,0 +1,65 @@
+---
+import type { Author } from "../types/types";
+
+interface Props {
+  authors: Author[];
+}
+
+const { authors } = Astro.props;
+const firstRow = authors.slice(0, authors.length - 2); // 最初の行（3人）
+const secondRow = authors.slice(authors.length - 2);   // 最後の2人
+---
+
+<div class="flex flex-col items-center gap-y-4">
+  <!-- 1行目（3人） -->
+  <div class="flex flex-row gap-x-8 justify-center">
+    {firstRow.map((author) => (
+      <div class="flex flex-col items-center text-center">
+        <span class="text-xl flex flex-row">
+          {author.url ? (
+            <a href={author.url} class="">
+              {author.name}
+            </a>
+          ) : (
+            author.name
+          )}
+          {author.notes && (
+            <sup class="text-xl">
+              {author.notes.map(
+                (note, index, array) =>
+                  note + (index < array.length - 1 ? "," : "")
+              )}
+            </sup>
+          )}
+        </span>
+        {author.institution && <p>{author.institution}</p>}
+      </div>
+    ))}
+  </div>
+
+  <!-- 2行目（最後の2人） -->
+  <div class="flex flex-row gap-x-8 justify-center">
+    {secondRow.map((author) => (
+      <div class="flex flex-col items-center text-center">
+        <span class="text-xl flex flex-row">
+          {author.url ? (
+            <a href={author.url} class="">
+              {author.name}
+            </a>
+          ) : (
+            author.name
+          )}
+          {author.notes && (
+            <sup class="text-xl">
+              {author.notes.map(
+                (note, index, array) =>
+                  note + (index < array.length - 1 ? "," : "")
+              )}
+            </sup>
+          )}
+        </span>
+        {author.institution && <p>{author.institution}</p>}
+      </div>
+    ))}
+  </div>
+</div>

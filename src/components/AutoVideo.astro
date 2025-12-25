@@ -1,0 +1,46 @@
+---
+type Props = {
+  src: string;
+  caption?: string;
+  figureClass?: string;
+  videoClass?: string;
+  captionClass?: string;
+
+  // 必要なら上書きできるようにしておく
+  autoplay?: boolean;
+  muted?: boolean;
+  loop?: boolean;
+  playsinline?: boolean;
+  controls?: boolean;
+  preload?: "none" | "metadata" | "auto";
+};
+
+const {
+  src,
+  caption,
+  figureClass = "m-0",
+  videoClass = "block w-full h-auto",
+  captionClass = "mt-2 text-center text-sm",
+
+  autoplay = true,
+  muted = true,
+  loop = true,
+  playsinline = true,
+  controls = true,
+  preload = "metadata",
+} = Astro.props as Props;
+---
+
+<figure class={figureClass}>
+  <video
+    class={videoClass}
+    src={src}
+    autoplay={autoplay}
+    muted={muted}
+    loop={loop}
+    playsinline={playsinline}
+    controls={controls}
+    preload={preload}
+  />
+  {caption && <figcaption class={captionClass}>{caption}</figcaption>}
+</figure>

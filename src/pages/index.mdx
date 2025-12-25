@@ -1,0 +1,450 @@
+---
+layout: ../layouts/Layout.astro
+title: Aligning CoM for Contact-Stable Grasp Planning via Disentangled Iterative Surface Fitting
+description: Simple project page template for your research paper, built with Astro and Tailwind CSS
+favicon: favicon.svg
+thumbnail: screenshot.png
+---
+
+import Layout from "../layouts/Layout.astro";
+import AutoVideo from "../components/AutoVideo.astro";
+import Header from "../components/Header.astro";
+import Video from "../components/Video.astro";
+import HighlightedSection from "../components/HighlightedSection.astro";
+import SmallCaps from "../components/SmallCaps.astro";
+import Figure from "../components/Figure.astro";
+import Image from "../components/Image.astro";
+import TwoColumns from "../components/TwoColumns.astro";
+import YouTubeVideo from "../components/YouTubeVideo.astro";
+import LaTeX from "../components/LaTeX.astro";
+
+import outside from "../assets/grasp_banana.mp4";
+import Fig1 from "../assets/Fig1.png";
+import Fig2 from "../assets/Fig2.png";
+import Fig3 from "../assets/Fig3.png";
+import Fig_grasp_quality from "../assets/sim_error-crop-1.png";
+import Fig_grasp_success_panda from "../assets/sim_grasp_success_panda.png";
+import Fig_grasp_success_cross_robot from "../assets/sim_grasp_success_cross_robot.png";
+import contact_surface_opt from "../assets/contact_surface_optimization_v2-crop.png"
+import cache_video from "../assets/grasp_real/grasp_real_observed_Hammer_compressed_qt.mp4"
+import Splat from "../components/Splat.tsx"
+
+{/* ---------------------------- Video Assets (panda) --------------------------------- */}
+{/* Video assets (known-shape) */}
+import panda_T                 from "../assets/grasp_sim/panda/grasp_execution_video_custom_T.mp4"
+import panda_RubberDuck        from "../assets/grasp_sim/panda/grasp_execution_video_custom_RubberDuck.mp4"
+import panda_Hammer            from "../assets/grasp_sim/panda/grasp_execution_video_custom_Hammer.mp4"
+import panda_WineGlass         from "../assets/grasp_sim/panda/grasp_execution_video_custom_WineGlass.mp4"
+import panda_OldCamera         from "../assets/grasp_sim/panda/grasp_execution_video_custom_OldCamera.mp4"
+
+{/* Video assets (observed-shape) */}
+import panda_mustard_bottle    from "../assets/grasp_sim/panda/grasp_execution_video_006_mustard_bottle.mp4"
+import panda_banana            from "../assets/grasp_sim/panda/grasp_execution_video_011_banana.mp4"
+import panda_plate             from "../assets/grasp_sim/panda/grasp_execution_video_029_plate.mp4"
+import panda_spatula           from "../assets/grasp_sim/panda/grasp_execution_video_033_spatula.mp4"
+import panda_power_drill       from "../assets/grasp_sim/panda/grasp_execution_video_035_power_drill.mp4"
+import panda_scissors          from "../assets/grasp_sim/panda/grasp_execution_video_037_scissors.mp4"
+import panda_adjustable_wrench from "../assets/grasp_sim/panda/grasp_execution_video_042_adjustable_wrench.mp4"
+import panda_extra_large_clamp from "../assets/grasp_sim/panda/grasp_execution_video_052_extra_large_clamp.mp4"
+import panda_golf_ball         from "../assets/grasp_sim/panda/grasp_execution_video_058_golf_ball.mp4"
+import panda_j_cups            from "../assets/grasp_sim/panda/grasp_execution_video_065-j_cups.mp4"
+
+
+{/* ---------------------------- Video Assets (ur5e) --------------------------------- */}
+{/* Video assets (known-shape) */}
+import ur5e_T                 from "../assets/grasp_sim/ur5e/grasp_execution_video_custom_T.mp4"
+import ur5e_RubberDuck        from "../assets/grasp_sim/ur5e/grasp_execution_video_custom_RubberDuck.mp4"
+import ur5e_Hammer            from "../assets/grasp_sim/ur5e/grasp_execution_video_custom_Hammer.mp4"
+import ur5e_WineGlass         from "../assets/grasp_sim/ur5e/grasp_execution_video_custom_WineGlass.mp4"
+import ur5e_OldCamera         from "../assets/grasp_sim/ur5e/grasp_execution_video_custom_OldCamera.mp4"
+
+{/* Video assets (observed-shape) */}
+import ur5e_mustard_bottle    from "../assets/grasp_sim/ur5e/grasp_execution_video_006_mustard_bottle.mp4"
+import ur5e_banana            from "../assets/grasp_sim/ur5e/grasp_execution_video_011_banana.mp4"
+import ur5e_plate             from "../assets/grasp_sim/ur5e/grasp_execution_video_029_plate.mp4"
+import ur5e_spatula           from "../assets/grasp_sim/ur5e/grasp_execution_video_033_spatula.mp4"
+import ur5e_power_drill       from "../assets/grasp_sim/ur5e/grasp_execution_video_035_power_drill.mp4"
+import ur5e_scissors          from "../assets/grasp_sim/ur5e/grasp_execution_video_037_scissors.mp4"
+import ur5e_adjustable_wrench from "../assets/grasp_sim/ur5e/grasp_execution_video_042_adjustable_wrench.mp4"
+import ur5e_extra_large_clamp from "../assets/grasp_sim/ur5e/grasp_execution_video_052_extra_large_clamp.mp4"
+import ur5e_golf_ball         from "../assets/grasp_sim/ur5e/grasp_execution_video_058_golf_ball.mp4"
+import ur5e_j_cups            from "../assets/grasp_sim/ur5e/grasp_execution_video_065-j_cups.mp4"
+
+
+{/* ---------------------------- Video Assets (iiwa) --------------------------------- */}
+{/* Video assets (known-shape) */}
+import iiwa_T                 from "../assets/grasp_sim/iiwa/grasp_execution_video_custom_T.mp4"
+import iiwa_RubberDuck        from "../assets/grasp_sim/iiwa/grasp_execution_video_custom_RubberDuck.mp4"
+import iiwa_Hammer            from "../assets/grasp_sim/iiwa/grasp_execution_video_custom_Hammer.mp4"
+import iiwa_WineGlass         from "../assets/grasp_sim/iiwa/grasp_execution_video_custom_WineGlass.mp4"
+import iiwa_OldCamera         from "../assets/grasp_sim/iiwa/grasp_execution_video_custom_OldCamera.mp4"
+
+{/* Video assets (observed-shape) */}
+import iiwa_mustard_bottle    from "../assets/grasp_sim/iiwa/grasp_execution_video_006_mustard_bottle.mp4"
+import iiwa_banana            from "../assets/grasp_sim/iiwa/grasp_execution_video_011_banana.mp4"
+import iiwa_plate             from "../assets/grasp_sim/iiwa/grasp_execution_video_029_plate.mp4"
+import iiwa_spatula           from "../assets/grasp_sim/iiwa/grasp_execution_video_033_spatula.mp4"
+import iiwa_power_drill       from "../assets/grasp_sim/iiwa/grasp_execution_video_035_power_drill.mp4"
+import iiwa_scissors          from "../assets/grasp_sim/iiwa/grasp_execution_video_037_scissors.mp4"
+import iiwa_adjustable_wrench from "../assets/grasp_sim/iiwa/grasp_execution_video_042_adjustable_wrench.mp4"
+import iiwa_extra_large_clamp from "../assets/grasp_sim/iiwa/grasp_execution_video_052_extra_large_clamp.mp4"
+import iiwa_golf_ball         from "../assets/grasp_sim/iiwa/grasp_execution_video_058_golf_ball.mp4"
+import iiwa_j_cups            from "../assets/grasp_sim/iiwa/grasp_execution_video_065-j_cups.mp4"
+
+
+{/* ---------------------------- Video Assets (real ur3e) --------------------------------- */}
+{/* Video assets (observed-shape: same objects) */}
+
+import ur3e_T                 from "../assets/grasp_real/ur3e/zoom/grasp_real_observed_T_compressed_h264_crop.mp4"
+import ur3e_RubberDuck        from "../assets/grasp_real/ur3e/zoom/grasp_real_observed_RubberDuck_compressed_h264_crop.mp4"
+import ur3e_Hammer            from "../assets/grasp_real/ur3e/zoom/grasp_real_observed_Hammer_compressed_h264_crop.mp4"
+import ur3e_WineGlass         from "../assets/grasp_real/ur3e/zoom/grasp_real_observed_WineGlass_compressed_h264_crop.mp4"
+import ur3e_OldCamera         from "../assets/grasp_real/ur3e/zoom/grasp_real_observed_OldCamera_compressed_h264_crop.mp4"
+
+{/* Video assets (observed-shape: additional objects) */}
+import ur3e_Tripod            from "../assets/grasp_real/ur3e/zoom/grasp_real_observed_Tripod_compressed_h264_crop.mp4"
+import ur3e_USB               from "../assets/grasp_real/ur3e/zoom/grasp_real_observed_USB_compressed_h264_crop.mp4"
+import ur3e_Controller        from "../assets/grasp_real/ur3e/zoom/grasp_real_observed_Controller_compressed_h264_crop.mp4"
+import ur3e_Tape              from "../assets/grasp_real/ur3e/zoom/grasp_real_observed_Tape_compressed_h264_crop.mp4"
+
+import ur3e_WineGlass_eyecache  from "../assets/grasp_real/ur3e/real_WineGlass_eyecache_h264_crop.mp4"
+
+
+
+import CodeBlock from "../components/CodeBlock.astro";
+import Table from "../components/Table.astro";
+export const components = {pre: CodeBlock, table: Table}
+
+<Header
+  title={frontmatter.title}
+  authors={[
+    {
+      name: "Tomoya Yamanokuchi",
+      url: "https://tomoya-yamanokuchi.github.io/",
+      institution: "NAIST",
+    },
+    {
+      name: "Alberto Bacchin",
+      url: "https://www.linkedin.com/in/alberto-bacchin-5306a6220/",
+      institution: "University of Padua",
+    },
+    {
+      name: "Emilio Olivastri",
+      url: "https://www.linkedin.com/in/emilio-olivastri-b767a5144/",
+      institution: "University of Padua",
+    },
+    {
+      name: "Ryotaro Arifuku",
+      url: "https://github.com/ariryo",
+      institution: "NAIST",
+    },
+    {
+      name: "Takamitsu Matsubara",
+      url: "https://sites.google.com/view/naist-robot-learning-en/home",
+      institution: "NAIST",
+    },
+    {
+      name: "Emanuele Menegatti",
+      url: "https://www.dei.unipd.it/~emg/",
+      institution: "University of Padua",
+    },
+  ]}
+  conference = "arXiv Preprint"
+  links={[
+    {
+      name: "arXiv",
+      url: "",
+      icon: "academicons:arxiv",
+    },
+    {
+      name: "Code",
+      url: "",
+      icon: "mdi:github",
+    },
+  ]}
+  />
+
+{/* <Video source={cache_video} /> */}
+
+<div class="grid grid-cols-3 gap-4">
+  <AutoVideo src={panda_WineGlass} caption="Panda: Wine_Glass" />
+  <AutoVideo src={ur5e_WineGlass} caption="UR5e: Wine_Glass" />
+  <AutoVideo src={iiwa_WineGlass} caption="iiwa: Wine_Glass" />
+</div>
+<div class="grid grid-cols-1 gap-4">
+  <AutoVideo src={ur3e_WineGlass_eyecache} caption="UR3e: Wine_Glass" />
+</div>
+
+<HighlightedSection>
+
+## Abstract
+
+{/* In this work, we address the limitation of surface fitting-based grasp planning algorithm, which primarily focuses on geometric alignment between the gripper and object surface while overlooking the stability of contact point distribution, often resulting in unstable grasps due to inadequate contact configurations. To overcome this limitation, we propose a novel surface fitting algorithm that integrates contact stability while preserving geometric compatibility. Inspired by human grasping behavior, our method disentangles the grasp pose optimization into three sequential steps: (1) rotation optimization to align contact normals, (2) translation refinement to improve Center of Mass (CoM) alignment, and (3) gripper aperture adjustment to optimize contact point distribution. We validate our approach through simulations on ten YCB dataset objects, demonstrating an 80\% improvement in grasp success over conventional surface fitting methods that disregard contact stability. Further details can be found on our project page: https://tomoya-yamanokuchi.github.io/disf-project-page/. */}
+
+</HighlightedSection>
+
+## Overview
+
+{/* While surface fitting algorithms based on geometric compatibility optimization offer high flexibility, they do not sufficiently account for whether the aligned surfaces actually lead to a stable grasp.
+Specifically, achieving a stable grasp requires the ability to generate contact forces that can fully counteract external forces and torques (known as force-closure property).
+However, by focusing solely on geometric alignment, these methods fail to consider fundamental factors necessary for generating contact forces, such as the appropriate spatial relationship between the hand and the object.
+As a result, even if the surfaces are geometrically well-aligned, a spatial gap can form between the hand and the object, preventing actual contact from being established, or leading to an unstable distribution of contact points.
+
+To address this issue, it is essential not only to align surfaces based on geometric compatibility but also to ensure that the hand and object surfaces are spatially well-aligned, allowing contact to be potentially established.
+We refer to this spatial alignment, which facilitates contact, as contact stability (Fig.1). */}
+
+<Figure caption="Figure 1: The relationship between the grasp planning space, geometrically aligned space, and spatially aligned space.">
+  <Image source={Fig1} altText="Figure 1: The relationship between the grasp planning space, geometrically aligned space, and spatially aligned space." class="max-h-[100rem]" />
+</Figure>
+
+<br />
+## Proposed Framwork
+
+In this study, we propose a novel surface fitting-based grasp planning algorithm that incorporates contact stability alongside geometric compatibility, which we call Disentangled Iterative Surface Fitting (DISF).
+From the perspective of contact stability, we explicitly integrate CoM alignment into the optimization process, drawing inspiration from the observation that, as mentioned earlier, humans naturally align their hand's CoM with that of the object to enhance grasp stability.
+To achieve this, we leverage another key insight from human grasping behavior-that different pose parameters are optimized sequentially rather than simultaneously-and disentangle the overall grasp pose optimization into the following three sequential stages:
+(1) rotation optimization to align contact normals,
+(2) translation refinement for CoM alignment, and
+(3) gripper aperture adjustment to optimize contact point distribution.
+Our disentangled optimization framework preserves the advantages of flexible geometric compatibility evaluation while systematically enhancing contact stability through CoM alignment. The overview of our DISF framework is shown in Fig.2.
+
+<Figure caption="Figure 2: Overview of the proposed DISF framework.">
+  <Image source={Fig2} altText="Figure 2: Overview of the proposed DISF framework." class="max-h-[50rem]" />
+</Figure>
+
+
+<br />
+## Contact Surface Optimization
+
+The grasp planning problem with antipodal grippers can be modeled as a contact surface optimization problem
+which maximizes the grasp quality <LaTeX inline formula="Q" /> by optimizing the rotation and translation parameter <LaTeX inline formula="(\mathbf{R}, \mathbf{t})" />
+as well as the fingertip displacement <LaTeX inline formula="\delta d" /> from the original gripper width,
+given a specific set of contact surfaces between the fingertip <LaTeX inline formula="\mathcal{S}^f" />
+and object <LaTeX inline formula="\mathcal{S}^o" />.
+This optimization can be demonstrated in Fig.3.
+
+<Figure
+    caption="Figure 3: An image demonstrating how grasp planning can be reformulated as a contact surface optimization problem."
+  >
+    <Image source={Fig3}
+      altText="Figure 3: An image demonstrating how grasp planning can be reformulated as a contact surface optimization problem."
+      class="max-w-2xl w-full"
+    />
+</Figure>
+
+{/* <TwoColumns>
+  <Figure slot="left" caption="Take a look at this YouTube video.">
+    <YouTubeVideo videoId="wjZofJX0v4M" />
+  </Figure>
+  <Figure slot="right" caption="Now look at this Gaussian Splat, rendered with a React component.">
+    <Splat client:idle />
+  </Figure>
+</TwoColumns> */}
+
+
+<br />
+
+## Simulation Experiment
+
+### Grasp Quality Evaluation
+{/* To validate the effectiveness of the proposed method, we evaluated the grasp quality for ten YCB objects
+using both the conventional geometric compatibility measures and the contact stability measure via CoM misalignment introduced in this study.
+As an evaluation metric for geometric compatibility, we used the following weighted measure, which combines the surface distance
+and the contact normal misalignment.
+
+The results are shown in Fig.4.
+The Top part represents the geometric compatibility error, while the Bottom part represents the CoM alignment error.
+For geometric compatibility evaluation, the sampling-based approach (CMA-ES) and the proposed DISF exhibit
+lower errors, whereas the conventional VISF consistently shows higher errors. An interesting phenomenon is that VISF,
+which is supposed to optimize geometric compatibility, performs worse than the other two methods. */}
+
+
+<Figure
+    caption="Figure 4: The results of planned grasp quality."
+  >
+    <Image source={Fig_grasp_quality}
+      altText="Figure 4: The results of planned grasp quality.
+                   The Top part represents the geometric compatibility error, while the Bottom part represents the CoM alignment error.
+                   In both the Top and Bottom plots, lower values indicate better performance.
+                   For each object, the Top and Bottom correspond to the same method. "
+      class="max-w-2xl w-full"
+    />
+</Figure>
+
+
+<br />
+### Grasp Success Rate Evaluation
+{/*
+To evaluate the feasibility of the planned grasps, we performed grasp executions in the MuJoCo physics simulator
+and assessed the grasp success rate for each object.
+
+The below table presents the success and failure rates of grasp executions in the simulation experiments.
+In the columns for each method, a ✅ indicates success, while a horizontal bar (-) indicates failure.
+The "Correspondence" column shows the total number of correspondence pairs used for surface fitting optimization.
+The bottom rows report the overall grasp success rate for each method across all objects and the average planning time in milliseconds.
+
+This table summarizes the grasp execution results.
+It can be observed that the proposed DISF method outperforms the baseline methods,
+highlighting the importance of CoM alignment in ensuring stable distribution of contact points for successful grasps. */}
+
+
+<Figure
+    caption="        Table 1: Grasp success on the Panda robot for the Known-shape and
+        Observed-shape regimes. The Known-shape regime uses 3D CAD objects,
+        while the Observed-shape regime uses YCB objects.
+        The checkmark (✅ ) indicates success, while the horizontal bar (-) indicates failure.
+        The bottom row reports the overall grasp success rate for each method across all objects of each setting and its average planning time."
+  >
+    <Image source={Fig_grasp_success_panda}
+      altText="
+        Table 1: Grasp success on the Panda robot for the Known-shape and
+        Observed-shape regimes. The Known-shape regime uses 3D CAD objects,
+        while the Observed-shape regime uses YCB objects.
+        The checkmark ($\greencheck$) indicates success, while the horizontal bar (-) indicates failure.
+        The bottom row reports the overall grasp success rate for each method across all objects of each setting and its average planning time.
+      "
+      class="max-w-2xl w-full"
+    />
+</Figure>
+
+
+<Figure
+    caption="Table 2: Average grasp success rate (\%) across robots and evaluation regimes.
+        Each robot row is averaged over all objects in the corresponding
+        setting."
+  >
+    <Image source={Fig_grasp_success_cross_robot}
+      altText="Table 2: Average grasp success rate (%) across robots and evaluation regimes.
+        Each robot row is averaged over all objects in the corresponding
+        setting."
+      class="max-w-2xl w-full"
+    />
+</Figure>
+
+
+<br />
+## Planned Grasp Execution by Proposed DISF
+
+
+### <span className="text-gray-500"> (Robot1) Franka Emika Panda + Franka Hand </span>
+
+###  <span className="text-gray-400"> \# Known-shape Setting </span>
+<div class="grid grid-cols-3 gap-4">
+  <AutoVideo src={panda_T} caption="T-shape_Block" />
+  <AutoVideo src={panda_RubberDuck} caption="Rubber_Duck" />
+  <AutoVideo src={panda_Hammer} caption="Hammer" />
+  <AutoVideo src={panda_WineGlass} caption="Wine_Glass" />
+  <AutoVideo src={panda_OldCamera} caption="Old_Camera" />
+</div>
+
+###  <span className="text-gray-400"> \# Observed-shape Setting </span>
+<div class="grid grid-cols-3 gap-4">
+  <AutoVideo src={panda_mustard_bottle} caption="006_mustard_bottle" />
+  <AutoVideo src={panda_banana} caption="011_banana" />
+  <AutoVideo src={panda_plate} caption="011_plate" />
+  <AutoVideo src={panda_spatula} caption="033_spatula" />
+  <AutoVideo src={panda_power_drill} caption="035_power_drill" />
+  <AutoVideo src={panda_scissors} caption="037_scissors" />
+  <AutoVideo src={panda_adjustable_wrench} caption="042_adjustable_wrench" />
+  <AutoVideo src={panda_extra_large_clamp} caption="052_extra_large_clamp" />
+  <AutoVideo src={panda_golf_ball} caption="058_golf_ball" />
+  <AutoVideo src={panda_j_cups} caption="065_j_cups" />
+</div>
+
+
+
+### <span className="text-blue-500"> (Robot2) Universal Robots UR5e + Robotiq HAND-E gripper </span>
+
+### <span className="text-blue-400"> \# Known-shape Setting </span>
+<div class="grid grid-cols-3 gap-4">
+  <AutoVideo src={ur5e_T} caption="T-shape_Block" />
+  <AutoVideo src={ur5e_RubberDuck} caption="Rubber_Duck" />
+  <AutoVideo src={ur5e_Hammer} caption="Hammer" />
+  <AutoVideo src={ur5e_WineGlass} caption="Wine_Glass" />
+  <AutoVideo src={ur5e_OldCamera} caption="Old_Camera" />
+</div>
+
+### <span className="text-blue-400"> \# Observed-shape Setting </span>
+<div class="grid grid-cols-3 gap-4">
+  <AutoVideo src={ur5e_mustard_bottle} caption="006_mustard_bottle" />
+  <AutoVideo src={ur5e_banana} caption="011_banana" />
+  <AutoVideo src={ur5e_plate} caption="011_plate" />
+  <AutoVideo src={ur5e_spatula} caption="033_spatula" />
+  <AutoVideo src={ur5e_power_drill} caption="035_power_drill" />
+  <AutoVideo src={ur5e_scissors} caption="037_scissors" />
+  <AutoVideo src={ur5e_adjustable_wrench} caption="042_adjustable_wrench" />
+  <AutoVideo src={ur5e_extra_large_clamp} caption="052_extra_large_clamp" />
+  <AutoVideo src={ur5e_golf_ball} caption="058_golf_ball" />
+  <AutoVideo src={ur5e_j_cups} caption="065_j_cups" />
+</div>
+
+
+
+### <span className="text-orange-500"> (Robot3) KUKA iiwa + UMI gripper </span>
+
+### <span className="text-orange-400"> \# Known-shape Setting </span>
+<div class="grid grid-cols-3 gap-4">
+  <AutoVideo src={iiwa_T} caption="T-shape_Block" />
+  <AutoVideo src={iiwa_RubberDuck} caption="Rubber_Duck" />
+  <AutoVideo src={iiwa_Hammer} caption="Hammer" />
+  <AutoVideo src={iiwa_WineGlass} caption="Wine_Glass" />
+  <AutoVideo src={iiwa_OldCamera} caption="Old_Camera" />
+</div>
+
+### <span className="text-orange-400"> \# Observed-shape Setting </span>
+<div class="grid grid-cols-3 gap-4">
+  <AutoVideo src={iiwa_mustard_bottle} caption="006_mustard_bottle" />
+  <AutoVideo src={iiwa_banana} caption="011_banana" />
+  <AutoVideo src={iiwa_plate} caption="011_plate" />
+  <AutoVideo src={iiwa_spatula} caption="033_spatula" />
+  <AutoVideo src={iiwa_power_drill} caption="035_power_drill" />
+  <AutoVideo src={iiwa_scissors} caption="037_scissors" />
+  <AutoVideo src={iiwa_adjustable_wrench} caption="042_adjustable_wrench" />
+  <AutoVideo src={iiwa_extra_large_clamp} caption="052_extra_large_clamp" />
+  <AutoVideo src={iiwa_golf_ball} caption="058_golf_ball" />
+  <AutoVideo src={iiwa_j_cups} caption="065_j_cups" />
+</div>
+
+
+
+{/* real-world examples */}
+
+## Real-world Grasp Execution by Proposed DISF
+
+### <span className="text-green-500"> (Real robot) Universal Robots UR3e + Robotiq HAND-E gripper </span>
+
+### <span className="text-green-400"> \# Observed-shape Setting (same objects) </span>
+<div class="grid grid-cols-2 gap-4">
+  <AutoVideo src={ur3e_T} caption="T-shape_Block" />
+  <AutoVideo src={ur3e_RubberDuck} caption="Rubber_Duck" />
+  <AutoVideo src={ur3e_Hammer} caption="Hammer" />
+  <AutoVideo src={ur3e_WineGlass} caption="Wine_Glass" />
+  <AutoVideo src={ur3e_OldCamera} caption="Old_Camera" />
+</div>
+
+### <span className="text-green-400"> \# Observed-shape Setting (additional objects) </span>
+<div class="grid grid-cols-2 gap-4">
+  <AutoVideo src={ur3e_Tripod} caption="Tripod" />
+  <AutoVideo src={ur3e_USB} caption="USB" />
+  <AutoVideo src={ur3e_Controller} caption="Controller" />
+  <AutoVideo src={ur3e_Tape} caption="Tape" />
+</div>
+
+
+<br />
+<br />
+
+{/* ## Supplementary Materials */}
+{/* <iframe src="/disf-ras-projectpage/assets/DISF_Supplementary_Materials.pdf" width="100%" height="600px"></iframe> */}
+
+<br />
+## BibTeX citation
+
+```bibtex
+@inproceedings{disf_arXiv_2025,
+  author       = {Tomoya Yamanokuchi, Alberto Bacchin, Emilio Olivastri, Ryotaro Arifuku, Takamitsu Matsubara, Emanuele Menegatti},
+  title        = {Aligning CoM for Contact-Stable Grasp Planning via Disentangled Iterative Surface Fitting},
+  booktitle    = {arXiv Preprint},
+  year         = {2025},
+}
+```
